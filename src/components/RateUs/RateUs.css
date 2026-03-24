@@ -1,0 +1,9 @@
+.rate-us {
+  position: relative;
+  margin-top: 100px;
+}
+
+.rate-us__stars {
+  align-items: center;
+  justify-content: center;
+}
