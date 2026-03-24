@@ -1,9 +1,8 @@
 {
   "version": "1.0.3",
   "manifest_version": 3,
-  "name": "__MSG_appName__",
-  "description": "__MSG_shortDesc__",
-  "default_locale": "en",
+  "name": "Reader Line",
+  "description": "A customizable reading guide ruler to help maintain focus while reading.",
   "action": {
     "default_popup": "index.html"
   },
