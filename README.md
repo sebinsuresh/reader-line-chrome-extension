@@ -1,6 +1,6 @@
 # Reader Line
 
-**Fork & Credits:** This repository is a personal fork of https://github.com/kamilrizatdinov/reader_line — React, localization, and the build pipeline were removed to shrink it for private use. All credit to the original author (original repo has no license).
+> **Fork & Credits:** This repository is a personal fork of https://github.com/kamilrizatdinov/reader_line — React, localization, and the build pipeline were removed to shrink it for private use. All credit to the original author (original repo has no license).
 
 A lightweight Chrome extension (Manifest V3) that overlays a customizable, mouse-tracking reading guide on web pages.
 
