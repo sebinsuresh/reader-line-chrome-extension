@@ -24,7 +24,7 @@
   ],
   "content_scripts": [
     {
-      "js": ["scripts/index.js"],
+      "js": ["scripts/constants.js", "scripts/storage.js", "scripts/commands.js", "scripts/reader-line.js", "scripts/index.js"],
       "css": ["scripts/index.css"],
       "matches": [
         "http://*/*",

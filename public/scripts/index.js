@@ -1,52 +1,33 @@
-// Create or select the readerLine element
-const READER_LINE_CLASS = "cmVhZGVyLWxpbmU";
-let readerLine = document.querySelector(`.${READER_LINE_CLASS}`);
+// Initialize services
+const storage = new StorageService();
+const readerLine = new ReaderLine(storage);
+readerLine.init();
 
-if (!readerLine) {
-  readerLine = document.createElement("div");
-  readerLine.setAttribute("class", READER_LINE_CLASS);
-  document.querySelector("body").appendChild(readerLine);
-}
+// Set up keyboard command registry
+const commands = new CommandRegistry();
 
-// Update readerLine style
-function updateReaderLine(color = "rgba(0, 0, 0, 0.15)", height = 20, enabled = false, mode = "line") {
-  readerLine.style.setProperty('--pseudo-background', color);
-  readerLine.style.backgroundColor = color;
-  readerLine.style.height = height + "px";
-  readerLine.style.display = (!!enabled) ? "block" : "none";
-  
-  if (mode === "line") {
-    readerLine.classList.remove("cmVhZGVyLWxpbmU--focus");
-  }
+// Register height adjustment commands
+commands.register('[', () => {
+  storage.getAll().then((data) => {
+    // Only allow adjustment if enabled
+    if (!data[STORAGE_KEYS.ENABLED]) return;
 
-  if (mode === "focus") {
-    readerLine.classList.add("cmVhZGVyLWxpbmU--focus");
-  }
-}
-
-// Event listener for mousemove
-document.addEventListener("mousemove", (e) => {
-  let height = parseInt(readerLine.style.height);
-  readerLine.style.top = e.clientY - (height / 2) + "px";
-});
-
-// Function to update values and readerLine style
-function updateValuesAndReaderLine() {
-  chrome.storage.local.get(['color', 'height', 'enabled', 'mode']).then((result) => {
-    const color = result.color;
-    const height = result.height;
-    const enabled = result.enabled;
-    const mode = result.mode;
-    updateReaderLine(color, height, enabled, mode);
+    const currentHeight = data[STORAGE_KEYS.HEIGHT] ?? DEFAULTS.HEIGHT;
+    const newHeight = Math.max(1, currentHeight - HEIGHT_STEP);
+    storage.set({ [STORAGE_KEYS.HEIGHT]: newHeight });
   });
-}
-
-// Listen for changes in storage.local
-chrome.storage.onChanged.addListener((changes, namespace) => {
-  if (namespace === 'local') {
-    updateValuesAndReaderLine();
-  }
 });
 
-// Query the initial values from the background script
-updateValuesAndReaderLine();
+commands.register(']', () => {
+  storage.getAll().then((data) => {
+    // Only allow adjustment if enabled
+    if (!data[STORAGE_KEYS.ENABLED]) return;
+
+    const currentHeight = data[STORAGE_KEYS.HEIGHT] ?? DEFAULTS.HEIGHT;
+    const newHeight = Math.min(500, currentHeight + HEIGHT_STEP);
+    storage.set({ [STORAGE_KEYS.HEIGHT]: newHeight });
+  });
+});
+
+// Start listening for keyboard commands
+commands.listen();
