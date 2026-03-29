@@ -4,6 +4,8 @@
 
 A lightweight Chrome extension (Manifest V3) that overlays a customizable, mouse-tracking reading guide on web pages.
 
+![line vs focus mode](./screenshots/modes.png)
+
 ## Features
 
 - **Customizable guide**: color, opacity, height
